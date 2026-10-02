@@ -1,0 +1,2290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KEMSA V | Sistema de Gestion de Eventos</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --sidebar:#111310;
+    --sidebar2:#191c18;
+    --green:#768b69;
+    --green2:#94a687;
+    --cream:#f6f3ed;
+    --white:#ffffff;
+    --text:#20231f;
+    --muted:#7b8179;
+    --line:#e8e7e2;
+    --danger:#b95c5c;
+    --orange:#d59b52;
+    --shadow:0 15px 45px rgba(25,35,25,.08);
+}
+
+body{
+    font-family:'DM Sans',sans-serif;
+    background:#f4f5f1;
+    color:var(--text);
+}
+
+button,input,select,textarea{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.app{
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:260px;
+    height:100vh;
+    background:
+        radial-gradient(circle at top left,rgba(118,139,105,.18),transparent 35%),
+        linear-gradient(180deg,var(--sidebar),#0c0e0c);
+    color:white;
+    position:fixed;
+    left:0;
+    top:0;
+    padding:28px 18px;
+    z-index:100;
+    display:flex;
+    flex-direction:column;
+}
+
+.logo{
+    padding:0 15px 30px;
+}
+
+.logo h1{
+    font-family:'Playfair Display',serif;
+    font-size:30px;
+    letter-spacing:1px;
+}
+
+.logo span{
+    color:#a9ba9c;
+}
+
+.logo p{
+    color:#72786f;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:3px;
+    margin-top:5px;
+}
+
+.menu-label{
+    color:#5d625b;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    padding:10px 15px;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.menu button{
+    border:0;
+    background:transparent;
+    color:#969c94;
+    padding:13px 15px;
+    border-radius:12px;
+    text-align:left;
+    font-size:14px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    transition:.25s;
+}
+
+.menu button:hover{
+    color:white;
+    background:#1c201b;
+}
+
+.menu button.active{
+    background:linear-gradient(90deg,#718364,#596b50);
+    color:white;
+    box-shadow:0 8px 20px rgba(82,105,72,.25);
+}
+
+.icon{
+    width:24px;
+    font-size:17px;
+    text-align:center;
+}
+
+.sidebar-bottom{
+    margin-top:auto;
+    border-top:1px solid #252925;
+    padding:20px 12px 0;
+}
+
+.user{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:#768b69;
+    font-weight:700;
+}
+
+.user small{
+    display:block;
+    color:#747a73;
+    margin-top:3px;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:260px;
+    padding:28px 32px 50px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:28px;
+}
+
+.topbar h2{
+    font-family:'Playfair Display',serif;
+    font-size:30px;
+}
+
+.topbar p{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:5px;
+}
+
+.top-actions{
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    border:0;
+    border-radius:11px;
+    padding:11px 17px;
+    font-weight:600;
+    transition:.2s;
+}
+
+.btn:hover{
+    transform:translateY(-1px);
+}
+
+.btn-primary{
+    background:#6e8262;
+    color:white;
+}
+
+.btn-dark{
+    background:#1d211d;
+    color:white;
+}
+
+.btn-light{
+    background:white;
+    border:1px solid var(--line);
+    color:#444;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+/* HERO */
+
+.hero{
+    height:340px;
+    border-radius:24px;
+    overflow:hidden;
+    position:relative;
+    margin-bottom:25px;
+    box-shadow:var(--shadow);
+}
+
+.hero img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:opacity .7s ease;
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg,rgba(9,12,8,.78),rgba(10,10,10,.15));
+}
+
+.hero-content{
+    position:absolute;
+    left:40px;
+    bottom:38px;
+    z-index:2;
+    color:white;
+    max-width:540px;
+}
+
+.hero-tag{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:3px;
+    color:#c5d3bd;
+}
+
+.hero h3{
+    font-family:'Playfair Display',serif;
+    font-size:43px;
+    line-height:1.05;
+    margin:10px 0;
+}
+
+.hero p{
+    color:#e4e5e1;
+    line-height:1.6;
+}
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-bottom:25px;
+}
+
+.stat{
+    background:white;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:21px;
+    box-shadow:0 8px 30px rgba(0,0,0,.03);
+}
+
+.stat-top{
+    display:flex;
+    justify-content:space-between;
+}
+
+.stat-icon{
+    width:39px;
+    height:39px;
+    background:#eff3ec;
+    border-radius:11px;
+    display:grid;
+    place-items:center;
+}
+
+.stat h4{
+    color:var(--muted);
+    font-size:12px;
+    font-weight:500;
+}
+
+.stat strong{
+    display:block;
+    font-family:'Playfair Display',serif;
+    font-size:30px;
+    margin-top:10px;
+}
+
+.stat small{
+    color:#7c8f72;
+}
+
+/* GRID */
+
+.grid-2{
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:22px;
+    box-shadow:0 8px 30px rgba(0,0,0,.025);
+}
+
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.card-header h3{
+    font-family:'Playfair Display',serif;
+    font-size:21px;
+}
+
+.card-header p{
+    color:var(--muted);
+    font-size:12px;
+}
+
+/* EVENT LIST */
+
+.event-mini{
+    display:flex;
+    align-items:center;
+    padding:13px 0;
+    border-bottom:1px solid #f0f0ed;
+    gap:14px;
+    cursor:pointer;
+}
+
+.event-mini:last-child{
+    border:0;
+}
+
+.event-date{
+    width:48px;
+    height:50px;
+    border-radius:12px;
+    background:#f0f3ed;
+    text-align:center;
+    padding-top:6px;
+}
+
+.event-date strong{
+    font-size:18px;
+    display:block;
+}
+
+.event-date span{
+    font-size:9px;
+    text-transform:uppercase;
+    color:#798174;
+}
+
+.event-info{
+    flex:1;
+}
+
+.event-info strong{
+    font-size:14px;
+}
+
+.event-info p{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:4px;
+}
+
+.status{
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:10px;
+    font-weight:700;
+}
+
+.status.proximo{
+    background:#edf3e9;
+    color:#66805b;
+}
+
+.status.curso{
+    background:#fff1df;
+    color:#ad742b;
+}
+
+.status.finalizado{
+    background:#ebeff3;
+    color:#607080;
+}
+
+.status.cancelado{
+    background:#fae8e8;
+    color:#a95858;
+}
+
+/* SEARCH */
+
+.searchbar{
+    display:flex;
+    gap:10px;
+    background:white;
+    padding:13px;
+    border-radius:16px;
+    border:1px solid var(--line);
+    margin-bottom:20px;
+}
+
+.searchbar input,
+.searchbar select{
+    border:0;
+    outline:0;
+    background:#f6f7f4;
+    padding:12px;
+    border-radius:10px;
+}
+
+.searchbar input{
+    flex:1;
+}
+
+/* TABLE */
+
+.table-wrap{
+    background:white;
+    border-radius:20px;
+    border:1px solid var(--line);
+    overflow:hidden;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#f8f8f5;
+    padding:14px 16px;
+    text-align:left;
+    color:#737a70;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+td{
+    padding:15px 16px;
+    border-top:1px solid #eeeeea;
+    font-size:13px;
+}
+
+tbody tr{
+    cursor:pointer;
+    transition:.2s;
+}
+
+tbody tr:hover{
+    background:#fafbf8;
+}
+
+/* PEOPLE */
+
+.people-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.person-card{
+    background:white;
+    border:1px solid var(--line);
+    border-radius:19px;
+    overflow:hidden;
+    transition:.2s;
+    cursor:pointer;
+}
+
+.person-card:hover{
+    transform:translateY(-4px);
+    box-shadow:var(--shadow);
+}
+
+.person-cover{
+    height:85px;
+    background:
+        linear-gradient(135deg,#273025,#849776);
+}
+
+.person-content{
+    padding:0 20px 20px;
+}
+
+.person-avatar{
+    width:64px;
+    height:64px;
+    border:4px solid white;
+    border-radius:50%;
+    background:#e4e9df;
+    margin-top:-32px;
+    display:grid;
+    place-items:center;
+    font-family:'Playfair Display';
+    font-size:22px;
+}
+
+.person-content h3{
+    margin-top:12px;
+}
+
+.person-content p{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:5px;
+}
+
+.person-meta{
+    display:flex;
+    justify-content:space-between;
+    margin-top:18px;
+    padding-top:15px;
+    border-top:1px solid var(--line);
+}
+
+.person-meta small{
+    color:var(--muted);
+}
+
+.person-meta strong{
+    display:block;
+    color:#56684d;
+}
+
+/* FORMS */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(9,12,9,.68);
+    backdrop-filter:blur(6px);
+    z-index:500;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    background:white;
+    width:min(760px,100%);
+    max-height:90vh;
+    overflow:auto;
+    border-radius:22px;
+    padding:28px;
+    box-shadow:0 30px 80px rgba(0,0,0,.25);
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.modal-header h2{
+    font-family:'Playfair Display';
+}
+
+.close{
+    width:36px;
+    height:36px;
+    border:0;
+    background:#f1f2ef;
+    border-radius:50%;
+    font-size:18px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.form-group.full{
+    grid-column:1/-1;
+}
+
+.form-group label{
+    font-size:11px;
+    color:#6d746a;
+    font-weight:700;
+    text-transform:uppercase;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    padding:12px;
+    border:1px solid #dedfd9;
+    border-radius:10px;
+    outline:0;
+}
+
+.form-group textarea{
+    min-height:80px;
+    resize:vertical;
+}
+
+.form-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:23px;
+}
+
+/* DETAILS */
+
+.detail-hero{
+    background:linear-gradient(135deg,#1b2119,#617355);
+    border-radius:22px;
+    padding:32px;
+    color:white;
+    margin-bottom:20px;
+}
+
+.detail-hero h2{
+    font-family:'Playfair Display';
+    font-size:34px;
+}
+
+.detail-hero p{
+    color:#cfd6ca;
+    margin-top:8px;
+}
+
+.details-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+}
+
+.detail{
+    padding:17px;
+    background:#f7f8f5;
+    border-radius:13px;
+}
+
+.detail small{
+    color:var(--muted);
+    display:block;
+    margin-bottom:5px;
+}
+
+.link{
+    color:#607756;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.empty{
+    text-align:center;
+    padding:45px;
+    color:#969b93;
+}
+
+/* TOAST */
+
+.toast{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    background:#1b201a;
+    color:white;
+    padding:15px 20px;
+    border-radius:12px;
+    z-index:900;
+    transform:translateY(100px);
+    opacity:0;
+    transition:.3s;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+@media(max-width:1000px){
+    .stats{grid-template-columns:1fr 1fr}
+    .people-grid{grid-template-columns:1fr 1fr}
+    .grid-2{grid-template-columns:1fr}
+}
+
+@media(max-width:760px){
+    .sidebar{
+        width:72px;
+        padding:20px 10px;
+    }
+
+    .logo h1{font-size:20px}
+    .logo p,.menu-label,.menu button span:last-child,.user div:last-child{
+        display:none;
+    }
+
+    .main{
+        margin-left:72px;
+        padding:20px 14px;
+    }
+
+    .stats,.people-grid,.details-grid,.form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+        grid-column:auto;
+    }
+
+    .hero h3{font-size:30px}
+    .hero-content{left:25px;bottom:25px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+    <div class="logo">
+    <h1>KEMSA <span>V</span></h1>
+    <p>Sistema de Gestion de Eventos</p>
+</div>
+
+    <div class="menu-label">Principal</div>
+
+    <nav class="menu">
+        <button class="active" onclick="showPage('dashboard',this)">
+            <span class="icon">⌂</span><span>Inicio</span>
+        </button>
+
+        <button onclick="showPage('eventos',this)">
+            <span class="icon">◇</span><span>Eventos</span>
+        </button>
+
+        <button onclick="showPage('clientes',this)">
+            <span class="icon">♙</span><span>Clientes</span>
+        </button>
+
+        <button onclick="showPage('personal',this)">
+            <span class="icon">♚</span><span>Personal</span>
+        </button>
+
+        <button onclick="showPage('calendario',this)">
+            <span class="icon">□</span><span>Calendario</span>
+        </button>
+    </nav>
+
+    <div class="sidebar-bottom">
+        <div class="user">
+            <div class="avatar">A</div>
+            <div>
+                <strong>Administrador</strong>
+                <small>Gestión de eventos</small>
+            </div>
+        </div>
+    </div>
+
+</aside>
+
+<main class="main">
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page active">
+
+    <div class="topbar">
+        <div>
+            <h2>Transformando planes en momentos</h2>
+            <p>Tus ideas, nuestro punto de partida.</p>
+        </div>
+
+        <div class="top-actions">
+            <button class="btn btn-light" onclick="openCliente()">+ Cliente</button>
+            <button class="btn btn-primary" onclick="openEvento()">+ Nuevo evento</button>
+        </div>
+    </div>
+
+    <div class="hero">
+        <img id="heroImage" src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1600&q=80">
+
+        <div class="hero-content">
+            <div class="hero-tag">Sistema de Gestion de Eventos</div>
+            <h3>Momentos extraordinarios, perfectamente organizados.</h3>
+            <p>Controla clientes, equipo, fechas y cada detalle de tus eventos desde un solo lugar.</p>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-top">
+                <h4>Eventos registrados</h4>
+                <div class="stat-icon">◇</div>
+            </div>
+            <strong id="statEventos">0</strong>
+            <small>Gestión general</small>
+        </div>
+
+        <div class="stat">
+            <div class="stat-top">
+                <h4>Próximos eventos</h4>
+                <div class="stat-icon">⌁</div>
+            </div>
+            <strong id="statProximos">0</strong>
+            <small>Por realizar</small>
+        </div>
+
+        <div class="stat">
+            <div class="stat-top">
+                <h4>Clientes</h4>
+                <div class="stat-icon">♙</div>
+            </div>
+            <strong id="statClientes">0</strong>
+            <small>Registrados</small>
+        </div>
+
+        <div class="stat">
+            <div class="stat-top">
+                <h4>Personal</h4>
+                <div class="stat-icon">♚</div>
+            </div>
+            <strong id="statPersonal">0</strong>
+            <small>Equipo activo</small>
+        </div>
+    </div>
+
+    <div class="grid-2">
+
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h3>Próximos eventos</h3>
+                    <p>Agenda más cercana</p>
+                </div>
+                <button class="btn btn-light" onclick="showPageByName('eventos')">Ver todos</button>
+            </div>
+
+            <div id="dashboardEventos"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h3>Equipo destacado</h3>
+                    <p>Encargados y coordinadores</p>
+                </div>
+            </div>
+
+            <div id="dashboardPersonal"></div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- EVENTOS -->
+
+<section id="eventos" class="page">
+
+    <div class="topbar">
+        <div>
+            <h2>Eventos</h2>
+            <p>Consulta y administra todos los eventos.</p>
+        </div>
+
+        <button class="btn btn-primary" onclick="openEvento()">+ Registrar evento</button>
+    </div>
+
+    <div class="searchbar">
+        <input id="buscarEvento" oninput="renderEventos()" placeholder="Buscar por ID, nombre, cliente o encargado...">
+        <input type="date" id="buscarFecha" onchange="renderEventos()">
+
+        <select id="buscarEstado" onchange="renderEventos()">
+            <option value="">Todos los estados</option>
+            <option>Próximo</option>
+            <option>En curso</option>
+            <option>Finalizado</option>
+            <option>Cancelado</option>
+        </select>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Evento</th>
+                    <th>Cliente</th>
+                    <th>Fecha</th>
+                    <th>Encargado</th>
+                    <th>Ubicación</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+
+            <tbody id="eventosTable"></tbody>
+        </table>
+    </div>
+
+</section>
+
+<!-- CLIENTES -->
+
+<section id="clientes" class="page">
+
+    <div class="topbar">
+        <div>
+            <h2>Clientes</h2>
+            <p>Directorio e historial de clientes.</p>
+        </div>
+
+        <button class="btn btn-primary" onclick="openCliente()">+ Dar de alta cliente</button>
+    </div>
+
+    <div class="searchbar">
+        <input id="buscarCliente" oninput="renderClientes()" placeholder="Buscar cliente, teléfono o correo...">
+    </div>
+
+    <div id="clientesGrid" class="people-grid"></div>
+
+</section>
+
+<!-- PERSONAL -->
+
+<section id="personal" class="page">
+
+    <div class="topbar">
+        <div>
+            <h2>Personal</h2>
+            <p>Equipo, cargos e historial de eventos.</p>
+        </div>
+
+        <button class="btn btn-primary" onclick="openPersonal()">+ Dar de alta personal</button>
+    </div>
+
+    <div class="searchbar">
+        <input id="buscarPersonal" oninput="renderPersonal()" placeholder="Buscar por nombre, puesto o teléfono...">
+    </div>
+
+    <div id="personalGrid" class="people-grid"></div>
+
+</section>
+
+<!-- CALENDARIO -->
+
+<section id="calendario" class="page">
+
+    <div class="topbar">
+        <div>
+            <h2>Agenda de eventos</h2>
+            <p>Eventos organizados cronológicamente.</p>
+        </div>
+
+        <button class="btn btn-primary" onclick="openEvento()">+ Nuevo evento</button>
+    </div>
+
+    <div class="card">
+        <div id="agendaEventos"></div>
+    </div>
+
+</section>
+
+<!-- DETALLE -->
+
+<section id="detalle" class="page">
+    <div id="detalleContenido"></div>
+</section>
+
+</main>
+</div>
+
+
+<!-- MODAL EVENTO -->
+
+<div class="modal" id="modalEvento">
+<div class="modal-box">
+
+    <div class="modal-header">
+        <div>
+            <h2>Registrar evento</h2>
+            <p style="color:#888;font-size:12px;margin-top:4px;">Información general y asignación</p>
+        </div>
+        <button class="close" onclick="closeModal('modalEvento')">×</button>
+    </div>
+
+    <form onsubmit="guardarEvento(event)">
+
+        <div class="form-grid">
+
+            <div class="form-group full">
+                <label>Nombre del evento</label>
+                <input id="evNombre" required placeholder="Ej. Boda Fernanda & Alejandro">
+            </div>
+
+            <div class="form-group">
+                <label>Cliente</label>
+                <select id="evCliente" required></select>
+            </div>
+
+            <div class="form-group">
+                <label>Encargado</label>
+                <select id="evEncargado" required></select>
+            </div>
+
+            <div class="form-group">
+                <label>Tipo de evento</label>
+                <select id="evTipo">
+                    <option>Boda</option>
+                    <option>XV Años</option>
+                    <option>Corporativo</option>
+                    <option>Cumpleaños</option>
+                    <option>Graduación</option>
+                    <option>Bautizo</option>
+                    <option>Otro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Fecha</label>
+                <input id="evFecha" type="date" required>
+            </div>
+
+            <div class="form-group">
+                <label>Hora</label>
+                <input id="evHora" type="time" required>
+            </div>
+
+            <div class="form-group">
+                <label>Estado</label>
+                <select id="evEstado">
+                    <option>Próximo</option>
+                    <option>En curso</option>
+                    <option>Finalizado</option>
+                    <option>Cancelado</option>
+                </select>
+            </div>
+
+            <div class="form-group full">
+                <label>Ubicación</label>
+                <input id="evUbicacion" required placeholder="Salón, hotel o dirección">
+            </div>
+
+            <div class="form-group">
+                <label>Número de invitados</label>
+                <input id="evInvitados" type="number" min="1" placeholder="250">
+            </div>
+
+            <div class="form-group">
+                <label>Presupuesto</label>
+                <input id="evPresupuesto" type="number" placeholder="150000">
+            </div>
+
+            <div class="form-group full">
+                <label>Notas / requerimientos</label>
+                <textarea id="evNotas" placeholder="Decoración, montaje, requerimientos especiales..."></textarea>
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn btn-light" onclick="closeModal('modalEvento')">Cancelar</button>
+            <button class="btn btn-primary">Guardar evento</button>
+        </div>
+
+    </form>
+</div>
+</div>
+
+
+<!-- MODAL CLIENTE -->
+
+<div class="modal" id="modalCliente">
+<div class="modal-box">
+
+<div class="modal-header">
+    <h2>Nuevo cliente</h2>
+    <button class="close" onclick="closeModal('modalCliente')">×</button>
+</div>
+
+<form onsubmit="guardarCliente(event)">
+<div class="form-grid">
+
+    <div class="form-group">
+        <label>Nombre</label>
+        <input id="clNombre" required>
+    </div>
+
+    <div class="form-group">
+        <label>Empresa</label>
+        <input id="clEmpresa">
+    </div>
+
+    <div class="form-group">
+        <label>Teléfono</label>
+        <input id="clTelefono" required>
+    </div>
+
+    <div class="form-group">
+        <label>Correo</label>
+        <input id="clCorreo" type="email" required>
+    </div>
+
+    <div class="form-group full">
+        <label>Dirección</label>
+        <input id="clDireccion">
+    </div>
+
+</div>
+
+<div class="form-actions">
+    <button type="button" class="btn btn-light" onclick="closeModal('modalCliente')">Cancelar</button>
+    <button class="btn btn-primary">Guardar cliente</button>
+</div>
+
+</form>
+</div>
+</div>
+
+
+<!-- MODAL PERSONAL -->
+
+<div class="modal" id="modalPersonal">
+<div class="modal-box">
+
+<div class="modal-header">
+    <h2>Alta de personal</h2>
+    <button class="close" onclick="closeModal('modalPersonal')">×</button>
+</div>
+
+<form onsubmit="guardarPersonal(event)">
+
+<div class="form-grid">
+
+    <div class="form-group">
+        <label>Nombre completo</label>
+        <input id="peNombre" required>
+    </div>
+
+    <div class="form-group">
+        <label>Puesto</label>
+        <select id="pePuesto">
+            <option>Coordinador de eventos</option>
+            <option>Event Planner</option>
+            <option>Logística</option>
+            <option>Decoración</option>
+            <option>Producción</option>
+            <option>Supervisor</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Teléfono</label>
+        <input id="peTelefono" required>
+    </div>
+
+    <div class="form-group">
+        <label>Correo</label>
+        <input id="peCorreo" type="email" required>
+    </div>
+
+    <div class="form-group">
+        <label>Disponibilidad</label>
+        <select id="peDisponibilidad">
+            <option>Disponible</option>
+            <option>Asignado</option>
+            <option>Vacaciones</option>
+        </select>
+    </div>
+
+</div>
+
+<div class="form-actions">
+    <button type="button" class="btn btn-light" onclick="closeModal('modalPersonal')">Cancelar</button>
+    <button class="btn btn-primary">Guardar personal</button>
+</div>
+
+</form>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =============================
+   DATOS INICIALES
+============================= */
+
+const clientesIniciales = [
+{
+ id:1,
+ nombre:"Sofía Hernández",
+ empresa:"Particular",
+ telefono:"443 123 4567",
+ correo:"sofia@email.com",
+ direccion:"Morelia, Michoacán"
+},
+{
+ id:2,
+ nombre:"Grupo Altavista",
+ empresa:"Altavista Corporativo",
+ telefono:"443 555 8910",
+ correo:"eventos@kemsav.mx",
+ direccion:"Morelia, Michoacán"
+},
+{
+ id:3,
+ nombre:"Mariana Torres",
+ empresa:"Particular",
+ telefono:"443 332 1178",
+ correo:"mariana@kemsav.com",
+ direccion:"Pátzcuaro, Michoacán"
+}
+];
+
+const personalInicial = [
+{
+ id:1,
+ nombre:"Karla Bucio",
+ puesto:"Coordinador de eventos",
+ telefono:"443 987 2211",
+ correo:"karla@kemsav.mx",
+ disponibilidad:"Disponible"
+},
+{
+ id:2,
+ nombre:"Nayeli Rodriguez",
+ puesto:"Logística",
+ telefono:"443 761 9922",
+ correo:"nayelir@kemsav.mx",
+ disponibilidad:"Asignado"
+},
+{
+ id:3,
+ nombre:"Saul Garcia",
+ puesto:"Event Planner",
+ telefono:"443 200 8831",
+ correo:"saul@kemsav.mx",
+ disponibilidad:"Disponible"
+},
+{
+ id:4,
+ nombre:"Jose Vidal López",
+ puesto:"Event Planner",
+ telefono:"443 270 2546",
+ correo:"josevidal@kemsav.mx",
+ disponibilidad:"Disponible"
+},
+{
+ id:5,
+ nombre:"Edgar Garcia",
+ puesto:"Event Planner",
+ telefono:"443 780 8301",
+ correo:"edgar@kemsav.mx",
+ disponibilidad:"Disponible"
+}
+
+];
+
+const eventosIniciales = [
+{
+ id:"EV-0001",
+ nombre:"Boda Sofía & Daniel",
+ clienteId:1,
+ encargadoId:1,
+ tipo:"Boda",
+ fecha:"2026-10-10",
+ hora:"17:00",
+ ubicacion:"Hacienda Cantalagua",
+ invitados:280,
+ presupuesto:185000,
+ estado:"Próximo",
+ notas:"Ceremonia civil, montaje floral y recepción."
+},
+{
+ id:"EV-0002",
+ nombre:"Gala Corporativa Altavista",
+ clienteId:2,
+ encargadoId:2,
+ tipo:"Corporativo",
+ fecha:"2026-10-18",
+ hora:"19:30",
+ ubicacion:"Centro de Convenciones",
+ invitados:400,
+ presupuesto:240000,
+ estado:"Próximo",
+ notas:"Pantallas, escenario, catering y producción."
+},
+{
+ id:"EV-0003",
+ nombre:"XV Años Mariana",
+ clienteId:3,
+ encargadoId:3,
+ tipo:"XV Años",
+ fecha:"2026-11-07",
+ hora:"18:00",
+ ubicacion:"Jardín Orquídea",
+ invitados:180,
+ presupuesto:130000,
+ estado:"Próximo",
+ notas:"Temática moderna con iluminación cálida."
+},
+{
+ id:"EV-0004",
+ nombre:"Cena Anual Altavista",
+ clienteId:2,
+ encargadoId:1,
+ tipo:"Corporativo",
+ fecha:"2026-08-15",
+ hora:"20:00",
+ ubicacion:"Hotel Grand",
+ invitados:150,
+ presupuesto:95000,
+ estado:"Finalizado",
+ notas:"Evento anual empresarial."
+}
+];
+
+let clientes =
+JSON.parse(localStorage.getItem("clientesKEMSA_V")) || clientesIniciales;
+
+let personal =
+JSON.parse(localStorage.getItem("personalKEMSA_V")) || personalInicial;
+
+let eventos =
+JSON.parse(localStorage.getItem("eventosKEMSA_V")) || eventosIniciales;
+
+
+/* =============================
+   NAVEGACIÓN
+============================= */
+
+function showPage(name,button){
+
+ document.querySelectorAll(".page")
+ .forEach(p=>p.classList.remove("active"));
+
+ document.getElementById(name).classList.add("active");
+
+ document.querySelectorAll(".menu button")
+ .forEach(b=>b.classList.remove("active"));
+
+ if(button) button.classList.add("active");
+
+ if(name==="eventos") renderEventos();
+ if(name==="clientes") renderClientes();
+ if(name==="personal") renderPersonal();
+ if(name==="calendario") renderAgenda();
+
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function showPageByName(name){
+
+ const btn=[...document.querySelectorAll(".menu button")]
+ .find(b=>b.getAttribute("onclick")?.includes("'"+name+"'"));
+
+ showPage(name,btn);
+}
+
+
+/* =============================
+   MODALES
+============================= */
+
+function closeModal(id){
+ document.getElementById(id).classList.remove("show");
+}
+
+function openCliente(){
+ document.getElementById("modalCliente").classList.add("show");
+}
+
+function openPersonal(){
+ document.getElementById("modalPersonal").classList.add("show");
+}
+
+function openEvento(){
+
+ actualizarSelects();
+
+ if(clientes.length===0){
+    toast("Primero debes registrar un cliente.");
+    return;
+ }
+
+ if(personal.length===0){
+    toast("Primero debes registrar personal.");
+    return;
+ }
+
+ document.getElementById("modalEvento").classList.add("show");
+}
+
+
+/* =============================
+   GUARDAR CLIENTE
+============================= */
+
+function guardarCliente(e){
+
+ e.preventDefault();
+
+ const cliente={
+    id:Date.now(),
+    nombre:clNombre.value,
+    empresa:clEmpresa.value || "Particular",
+    telefono:clTelefono.value,
+    correo:clCorreo.value,
+    direccion:clDireccion.value
+ };
+
+ clientes.push(cliente);
+
+ guardarDatos();
+
+ e.target.reset();
+
+ closeModal("modalCliente");
+
+ renderAll();
+
+ toast("Cliente registrado correctamente");
+}
+
+
+/* =============================
+   GUARDAR PERSONAL
+============================= */
+
+function guardarPersonal(e){
+
+ e.preventDefault();
+
+ const persona={
+    id:Date.now(),
+    nombre:peNombre.value,
+    puesto:pePuesto.value,
+    telefono:peTelefono.value,
+    correo:peCorreo.value,
+    disponibilidad:peDisponibilidad.value
+ };
+
+ personal.push(persona);
+
+ guardarDatos();
+
+ e.target.reset();
+
+ closeModal("modalPersonal");
+
+ renderAll();
+
+ toast("Personal registrado correctamente");
+}
+
+
+/* =============================
+   GUARDAR EVENTO
+============================= */
+
+function guardarEvento(e){
+
+ e.preventDefault();
+
+ const numero=
+ String(eventos.length+1).padStart(4,"0");
+
+ const evento={
+    id:"EV-"+numero,
+    nombre:evNombre.value,
+    clienteId:Number(evCliente.value),
+    encargadoId:Number(evEncargado.value),
+    tipo:evTipo.value,
+    fecha:evFecha.value,
+    hora:evHora.value,
+    estado:evEstado.value,
+    ubicacion:evUbicacion.value,
+    invitados:evInvitados.value,
+    presupuesto:evPresupuesto.value,
+    notas:evNotas.value
+ };
+
+ eventos.push(evento);
+
+ guardarDatos();
+
+ e.target.reset();
+
+ closeModal("modalEvento");
+
+ renderAll();
+
+ toast("Evento registrado exitosamente");
+}
+
+
+/* =============================
+   SELECTS
+============================= */
+
+function actualizarSelects(){
+
+ evCliente.innerHTML=
+ clientes.map(c=>
+ `<option value="${c.id}">${c.nombre}</option>`
+ ).join("");
+
+ evEncargado.innerHTML=
+ personal.map(p=>
+ `<option value="${p.id}">${p.nombre} — ${p.puesto}</option>`
+ ).join("");
+}
+
+
+/* =============================
+   EVENTOS
+============================= */
+
+function renderEventos(){
+
+ const q=(buscarEvento?.value || "").toLowerCase();
+
+ const fecha=buscarFecha?.value || "";
+ const estado=buscarEstado?.value || "";
+
+ let filtrados=eventos.filter(e=>{
+
+    const cliente=getCliente(e.clienteId);
+    const encargado=getPersonal(e.encargadoId);
+
+    const texto=
+    `${e.id} ${e.nombre} ${cliente?.nombre||""} ${encargado?.nombre||""}`
+    .toLowerCase();
+
+    return texto.includes(q)
+    && (!fecha || e.fecha===fecha)
+    && (!estado || e.estado===estado);
+ });
+
+ eventosTable.innerHTML=
+ filtrados.length ?
+ filtrados.map(e=>{
+
+ const cliente=getCliente(e.clienteId);
+ const encargado=getPersonal(e.encargadoId);
+
+ return `
+ <tr onclick="verEvento('${e.id}')">
+    <td><strong>${e.id}</strong></td>
+    <td>
+        <strong>${e.nombre}</strong><br>
+        <small style="color:#999">${e.tipo}</small>
+    </td>
+    <td>${cliente?.nombre || "-"}</td>
+    <td>${formatFecha(e.fecha)}</td>
+    <td>${encargado?.nombre || "-"}</td>
+    <td>${e.ubicacion}</td>
+    <td>${statusHTML(e.estado)}</td>
+ </tr>`;
+
+ }).join("")
+ :
+ `<tr><td colspan="7"><div class="empty">No se encontraron eventos.</div></td></tr>`;
+}
+
+
+/* =============================
+   CLIENTES
+============================= */
+
+function renderClientes(){
+
+ const q=(buscarCliente?.value || "").toLowerCase();
+
+ const filtrados=clientes.filter(c=>
+ `${c.nombre} ${c.telefono} ${c.correo} ${c.empresa}`
+ .toLowerCase()
+ .includes(q)
+ );
+
+ clientesGrid.innerHTML=
+ filtrados.map(c=>{
+
+ const cantidad=
+ eventos.filter(e=>e.clienteId===c.id).length;
+
+ return `
+ <div class="person-card" onclick="verCliente(${c.id})">
+    <div class="person-cover"></div>
+
+    <div class="person-content">
+
+        <div class="person-avatar">
+            ${initials(c.nombre)}
+        </div>
+
+        <h3>${c.nombre}</h3>
+        <p>${c.empresa}</p>
+        <p>${c.correo}</p>
+        <p>${c.telefono}</p>
+
+        <div class="person-meta">
+            <small>Eventos
+                <strong>${cantidad}</strong>
+            </small>
+
+            <span class="link">Ver perfil →</span>
+        </div>
+
+    </div>
+ </div>`;
+
+ }).join("");
+}
+
+
+/* =============================
+   PERSONAL
+============================= */
+
+function renderPersonal(){
+
+ const q=(buscarPersonal?.value || "").toLowerCase();
+
+ const filtrados=personal.filter(p=>
+ `${p.nombre} ${p.puesto} ${p.telefono}`
+ .toLowerCase()
+ .includes(q)
+ );
+
+ personalGrid.innerHTML=
+ filtrados.map(p=>{
+
+ const realizados=
+ eventos.filter(e=>e.encargadoId===p.id).length;
+
+ return `
+ <div class="person-card" onclick="verPersonal(${p.id})">
+
+    <div class="person-cover"></div>
+
+    <div class="person-content">
+
+        <div class="person-avatar">
+            ${initials(p.nombre)}
+        </div>
+
+        <h3>${p.nombre}</h3>
+
+        <p>${p.puesto}</p>
+        <p>${p.correo}</p>
+
+        <div class="person-meta">
+
+            <small>Eventos
+                <strong>${realizados}</strong>
+            </small>
+
+            <small>Estado
+                <strong>${p.disponibilidad}</strong>
+            </small>
+
+        </div>
+
+    </div>
+
+ </div>`;
+
+ }).join("");
+}
+
+
+/* =============================
+   DETALLE EVENTO
+============================= */
+
+function verEvento(id){
+
+ const e=eventos.find(x=>x.id===id);
+
+ if(!e) return;
+
+ const cliente=getCliente(e.clienteId);
+ const encargado=getPersonal(e.encargadoId);
+
+ detalleContenido.innerHTML=`
+
+ <button class="btn btn-light"
+ onclick="showPageByName('eventos')"
+ style="margin-bottom:15px">
+ ← Volver
+ </button>
+
+ <div class="detail-hero">
+
+    <small>${e.id} · ${e.tipo}</small>
+
+    <h2>${e.nombre}</h2>
+
+    <p>
+    ${formatFecha(e.fecha)} · ${e.hora} · ${e.ubicacion}
+    </p>
+
+ </div>
+
+ <div class="card">
+
+    <div class="card-header">
+        <h3>Información del evento</h3>
+        ${statusHTML(e.estado)}
+    </div>
+
+    <div class="details-grid">
+
+        <div class="detail">
+            <small>Cliente</small>
+            <span class="link"
+            onclick="verCliente(${cliente?.id})">
+            ${cliente?.nombre || "-"}
+            </span>
+        </div>
+
+        <div class="detail">
+            <small>Encargado</small>
+            <span class="link"
+            onclick="verPersonal(${encargado?.id})">
+            ${encargado?.nombre || "-"}
+            </span>
+        </div>
+
+        <div class="detail">
+            <small>Fecha</small>
+            <strong>${formatFecha(e.fecha)}</strong>
+        </div>
+
+        <div class="detail">
+            <small>Horario</small>
+            <strong>${e.hora}</strong>
+        </div>
+
+        <div class="detail">
+            <small>Invitados</small>
+            <strong>${e.invitados || "-"}</strong>
+        </div>
+
+        <div class="detail">
+            <small>Presupuesto</small>
+            <strong>
+            ${e.presupuesto ?
+            money(e.presupuesto) : "-"}
+            </strong>
+        </div>
+
+        <div class="detail" style="grid-column:1/-1">
+            <small>Ubicación</small>
+            <strong>${e.ubicacion}</strong>
+        </div>
+
+        <div class="detail" style="grid-column:1/-1">
+            <small>Notas y requerimientos</small>
+            <p>${e.notas || "Sin observaciones."}</p>
+        </div>
+
+    </div>
+
+ </div>
+ `;
+
+ showDetail();
+}
+
+
+/* =============================
+   PERFIL PERSONAL
+============================= */
+
+function verPersonal(id){
+
+ const p=personal.find(x=>x.id===id);
+
+ if(!p) return;
+
+ const lista=eventos.filter(e=>e.encargadoId===id);
+
+ detalleContenido.innerHTML=`
+
+ <button class="btn btn-light"
+ onclick="showPageByName('personal')"
+ style="margin-bottom:15px">
+ ← Volver
+ </button>
+
+ <div class="detail-hero">
+    <small>Perfil de colaborador</small>
+    <h2>${p.nombre}</h2>
+    <p>${p.puesto}</p>
+ </div>
+
+ <div class="grid-2">
+
+ <div class="card">
+
+    <div class="card-header">
+        <h3>Información</h3>
+    </div>
+
+    <div class="details-grid">
+
+        <div class="detail">
+            <small>Teléfono</small>
+            <strong>${p.telefono}</strong>
+        </div>
+
+        <div class="detail">
+            <small>Correo</small>
+            <strong>${p.correo}</strong>
+        </div>
+
+        <div class="detail">
+            <small>Disponibilidad</small>
+            <strong>${p.disponibilidad}</strong>
+        </div>
+
+    </div>
+
+ </div>
+
+ <div class="card">
+
+    <div class="card-header">
+        <div>
+            <h3>Eventos asignados</h3>
+            <p>Selecciona uno para abrirlo</p>
+        </div>
+    </div>
+
+    ${
+    lista.length ?
+    lista.map(e=>`
+        <div class="event-mini"
+        onclick="verEvento('${e.id}')">
+
+            <div class="event-date">
+                <strong>${day(e.fecha)}</strong>
+                <span>${month(e.fecha)}</span>
+            </div>
+
+            <div class="event-info">
+                <strong>${e.nombre}</strong>
+                <p>${e.id} · ${e.ubicacion}</p>
+            </div>
+
+            <span>→</span>
+
+        </div>
+    `).join("")
+    :
+    `<div class="empty">Sin eventos asignados.</div>`
+    }
+
+ </div>
+
+ </div>
+ `;
+
+ showDetail();
+}
+
+
+/* =============================
+   PERFIL CLIENTE
+============================= */
+
+function verCliente(id){
+
+ const c=clientes.find(x=>x.id===id);
+
+ if(!c) return;
+
+ const lista=eventos.filter(e=>e.clienteId===id);
+
+ detalleContenido.innerHTML=`
+
+ <button class="btn btn-light"
+ onclick="showPageByName('clientes')"
+ style="margin-bottom:15px">
+ ← Volver
+ </button>
+
+ <div class="detail-hero">
+    <small>Perfil de cliente</small>
+    <h2>${c.nombre}</h2>
+    <p>${c.empresa}</p>
+ </div>
+
+ <div class="grid-2">
+
+ <div class="card">
+
+    <div class="card-header">
+        <h3>Datos de contacto</h3>
+    </div>
+
+    <div class="details-grid">
+
+        <div class="detail">
+            <small>Teléfono</small>
+            <strong>${c.telefono}</strong>
+        </div>
+
+        <div class="detail">
+            <small>Correo</small>
+            <strong>${c.correo}</strong>
+        </div>
+
+        <div class="detail">
+            <small>Dirección</small>
+            <strong>${c.direccion || "-"}</strong>
+        </div>
+
+    </div>
+
+ </div>
+
+ <div class="card">
+
+    <div class="card-header">
+        <div>
+            <h3>Historial de eventos</h3>
+            <p>Haz clic para consultar</p>
+        </div>
+    </div>
+
+    ${
+    lista.length ?
+    lista.map(e=>`
+        <div class="event-mini"
+        onclick="verEvento('${e.id}')">
+
+            <div class="event-date">
+                <strong>${day(e.fecha)}</strong>
+                <span>${month(e.fecha)}</span>
+            </div>
+
+            <div class="event-info">
+                <strong>${e.nombre}</strong>
+                <p>${e.id} · ${e.tipo}</p>
+            </div>
+
+            ${statusHTML(e.estado)}
+
+        </div>
+    `).join("")
+    :
+    `<div class="empty">Este cliente aún no tiene eventos.</div>`
+    }
+
+ </div>
+
+ </div>
+ `;
+
+ showDetail();
+}
+function showDetail(){
+ document.querySelectorAll(".page")
+ .forEach(p=>p.classList.remove("active"));
+
+ detalle.classList.add("active");
+
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* =============================
+   DASHBOARD
+============================= */
+
+function renderDashboard(){
+
+ statEventos.textContent=eventos.length;
+
+ statProximos.textContent=
+ eventos.filter(e=>e.estado==="Próximo").length;
+
+ statClientes.textContent=clientes.length;
+
+ statPersonal.textContent=personal.length;
+
+ const proximos=[...eventos]
+ .filter(e=>e.estado==="Próximo")
+ .sort((a,b)=>new Date(a.fecha)-new Date(b.fecha))
+ .slice(0,5);
+
+ dashboardEventos.innerHTML=
+ proximos.length ?
+ proximos.map(e=>`
+
+ <div class="event-mini"
+ onclick="verEvento('${e.id}')">
+
+    <div class="event-date">
+        <strong>${day(e.fecha)}</strong>
+        <span>${month(e.fecha)}</span>
+    </div>
+
+    <div class="event-info">
+        <strong>${e.nombre}</strong>
+        <p>
+        ${e.hora} · ${e.ubicacion}
+        </p>
+    </div>
+    ${statusHTML(e.estado)}
+ </div>
+ `).join("")
+ :
+ `<div class="empty">No hay eventos próximos.</div>`;
+
+ dashboardPersonal.innerHTML=
+ personal.slice(0,4).map(p=>{
+
+ const cantidad=
+ eventos.filter(e=>e.encargadoId===p.id).length;
+
+ return `
+
+ <div class="event-mini"
+ onclick="verPersonal(${p.id})">
+
+    <div class="person-avatar"
+    style="width:43px;height:43px;margin:0;font-size:14px;border:0">
+
+    ${initials(p.nombre)}
+
+    </div>
+    <div class="event-info">
+        <strong>${p.nombre}</strong>
+        <p>${p.puesto}</p>
+    </div>
+    <strong>${cantidad}</strong>
+ </div>
+ `;
+ }).join("");
+}
+
+/* =============================
+   AGENDA
+============================= */
+
+function renderAgenda(){
+
+ const ordenados=[...eventos]
+ .sort((a,b)=>new Date(a.fecha)-new Date(b.fecha));
+
+ agendaEventos.innerHTML=
+ ordenados.map(e=>`
+
+ <div class="event-mini"
+ onclick="verEvento('${e.id}')">
+
+    <div class="event-date">
+        <strong>${day(e.fecha)}</strong>
+        <span>${month(e.fecha)}</span>
+    </div>
+    <div class="event-info">
+        <strong>${e.nombre}</strong>
+        <p>
+        ${e.id} · ${e.hora} · ${e.ubicacion}
+        </p>
+    </div>
+
+    ${statusHTML(e.estado)}
+
+ </div>
+
+ `).join("");
+}
+
+/* =============================
+   UTILIDADES
+============================= */
+function getCliente(id){
+ return clientes.find(c=>c.id===id);
+}
+
+function getPersonal(id){
+ return personal.find(p=>p.id===id);
+}
+
+function initials(nombre){
+ return nombre
+ .split(" ")
+ .slice(0,2)
+ .map(x=>x[0])
+ .join("")
+ .toUpperCase();
+}
+
+function formatFecha(fecha){
+
+ if(!fecha) return "-";
+
+ return new Date(fecha+"T12:00:00")
+ .toLocaleDateString("es-MX",{
+    day:"2-digit",
+    month:"long",
+    year:"numeric"
+ });
+}
+
+function day(fecha){
+ return new Date(fecha+"T12:00:00")
+ .getDate()
+ .toString()
+ .padStart(2,"0");
+}
+
+function month(fecha){
+
+ return new Date(fecha+"T12:00:00")
+ .toLocaleDateString("es-MX",{month:"short"})
+ .replace(".","")
+ .toUpperCase();
+}
+
+function money(value){
+
+ return Number(value)
+ .toLocaleString("es-MX",{
+    style:"currency",
+    currency:"MXN",
+    maximumFractionDigits:0
+ });
+}
+function statusHTML(status){
+ const clase=
+ status==="Próximo" ? "proximo" :
+ status==="En curso" ? "curso" :
+ status==="Finalizado" ? "finalizado" :
+ "cancelado";
+
+ return `<span class="status ${clase}">${status}</span>`;
+}
+
+function guardarDatos(){
+
+ localStorage.setItem(
+ "clientesKEMSA_V",
+ JSON.stringify(clientes)
+ );
+
+ localStorage.setItem(
+ "personalKEMSA_V",
+ JSON.stringify(personal)
+ );
+
+ localStorage.setItem(
+ "eventosKEMSA_V",
+ JSON.stringify(eventos)
+ );
+}
+function toast(text){
+
+ const t=document.getElementById("toast");
+
+ t.textContent=text;
+
+ t.classList.add("show");
+
+ setTimeout(()=>{
+    t.classList.remove("show");
+ },2500);
+}
+
+function renderAll(){
+
+ actualizarSelects();
+
+ renderDashboard();
+
+ renderEventos();
+
+ renderClientes();
+
+ renderPersonal();
+
+ renderAgenda();
+}
+
+/* =============================
+   IMÁGENES CAMBIANTES
+============================= */
+const heroImages=[
+"https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1600&q=80",
+"https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1600&q=80",
+"https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1600&q=80",
+"https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1600&q=80"
+];
+let heroIndex=0;
+setInterval(()=>{
+ heroIndex=(heroIndex+1)%heroImages.length
+ const img=document.getElementById("heroImage");
+ img.style.opacity=0;
+ setTimeout(()=>{
+    img.src=heroImages[heroIndex];
+    img.style.opacity=1;
+
+ },500);
+},5000);
+/* CERRAR AL TOCAR FUERA */
+
+document.querySelectorAll(".modal")
+.forEach(modal=>{
+ modal.addEventListener("click",e=>{
+    if(e.target===modal){
+        modal.classList.remove("show");
+    }
+ });
+});
+
+/* INICIO */
+renderAll();
+</script>
+
+</body>
+</html>
