@@ -51,4 +51,5 @@ Esta sección se completará cuando exista una primera versión ejecutable y el 
 
 ## Estado del proyecto
 
-Proyecto en etapa de requerimientos, alcance y planificación conforme al Acta del Proyecto F1 del 11 de septiembre de 2026.
+Proyecto en etapa de desarrollo de la base de datos funcional. Se cuenta con la definición de requerimientos, alcance y planificación, así como un primer alcance de la interfaz fronted KEMSA V.
+Actualmente se está trabajando en la estructura, tablas y relaciones de la base de datos conforme al cronograma establecido.
