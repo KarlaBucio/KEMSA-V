@@ -1,5 +1,4 @@
-# Sistema de Tareas de Empresa de Eventos
-
+# KEMSA-V
 Proyecto académico para la materia **Gestión de Proyectos de Software (SCG-1009)**.
 
 ## Descripción
