@@ -1,5 +1,5 @@
 # KEMSA-V
-Proyecto académico para la materia **Gestión de Proyectos de Software (SCG-1009)**.
+Proyecto académico para la materia **Gestión de Proyectos de Software .
 
 ## Descripción
 
