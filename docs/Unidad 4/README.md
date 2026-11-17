@@ -4,6 +4,8 @@
 
 Entrega del proyecto funcional en navegador.
 
+https://karlabucio.github.io/KEMSA-V/
+
 ### Funciones implementadas
 
 - Panel de inicio con accesos a eventos, próximos eventos, clientes y personal.
