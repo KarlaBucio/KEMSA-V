@@ -137,4 +137,4 @@ Lineamientos establecidos para el proyecto:
 
 - **[Unidad 4: proyecto funcional y documentación](docs/Unidad%204/)**.
 - **[Seguimiento de actividades en Issues](https://github.com/KarlaBucio/KEMSA-V/issues)**.
-- **[Demostración web](https://karlabucio.github.io/KEMSA-V/)**, sujeta a publicación mediante GitHub Pages.
+- **[Demostración web](https://karlabucio.github.io/KEMSA-V/)**, mediante GitHub Pages.
